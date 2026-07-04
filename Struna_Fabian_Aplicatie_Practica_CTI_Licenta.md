@@ -1,8 +1,23 @@
 # TOOL PASIV DE MONITORIZARE DHCP CU DETECȚIE ALE ATACURILOR
 
+Instrument software pentru monitorizarea pasivă a traficului DHCP dintr-o rețea locală.
+Capturează lease-urile active, vizualizează starea pool-ului IP printr-un dashboard web
+și detectează atacuri de tip DHCP Starvation, Rogue DHCP Server și DHCP Spoofing.
+
+--------------------------------------------------
 
 # Repo
 https://github.com/OnuSike/dhcp-monitor
+
+--------------------------------------------------
+
+# Structura proiectului
+- main.py               — programul principal
+- passiveSnooping.py    — captură de pachete și gestionarea lease-urilor
+- detect.py             — logica de detecție a atacurilor
+- app.py                — server Flask și API REST
+- config.py             — configurare
+- templates/index.html  — dashboard web
 
 --------------------------------------------------
 
@@ -64,8 +79,8 @@ sudo /opt/dhcp-venv/bin/python3 main.py
 # config.py
 
 # None for auto-detection, or set manually
-TRUSTED_GATEWAY = "None"  # e.g. "192.168.1.1"
-TRUSTED_DHCP_SERVER = "None"  # e.g. "192.168.1.1"
+TRUSTED_GATEWAY = None  # e.g. "192.168.1.1"
+TRUSTED_DHCP_SERVER = None  # e.g. "192.168.1.1"
 
 INTERFACE = None  # e.g. "\\Device\\NPF_{1E514016-1566-4FDE-888C-281DC2F2883F}" on Windows, "eth0" on Linux
 # leave as 'None' for Scapy auto-detection(conf.iface) - not recommended
@@ -74,8 +89,11 @@ STARVATION_THRESHOLD = 10
 STARVATION_WINDOW = 5
 STARVATION_COOLDOWN = 30
 
+# Web Server Host
+HOST = "0.0.0.0" # "0.0.0.0" listens on all interfaces, or set to a specific IP e.g. "192.168.1.5"
+PORT = 5000
+
 --------------------------------------------------
 
 # Server-ul web
-
-http://127.0.0.1:5000
+http://HOST:PORT # e.g. "https://127.0.0.1:5000"
